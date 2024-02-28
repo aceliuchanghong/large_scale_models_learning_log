@@ -40,8 +40,8 @@
 6. 下载自己的模型本地
 
 ![img_19.png](..%2Fusing_files%2Fimgs%2Fimg_19.png)
-
-
+![img_20.png](..%2Fusing_files%2Fimgs%2Fimg_20.png)
+![img_21.png](..%2Fusing_files%2Fimgs%2Fimg_21.png)
 
 
 ### reference(参考文档)
