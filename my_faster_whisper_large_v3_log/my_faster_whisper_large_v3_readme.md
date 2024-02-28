@@ -1,6 +1,3 @@
-### colab_run_log
-[my_faster_whisper_large_v3_readme.ipynb](my_faster_whisper_large_v3_readme.ipynb)
-
 #### notice1
 audio_path = "/content/1.wav" 通过下方图片这样复制
 ![img.png](..%2Fusing_files%2Fimgs%2Fimg.png)
