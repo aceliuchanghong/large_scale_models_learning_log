@@ -43,8 +43,14 @@
 ![img_20.png](..%2Fusing_files%2Fimgs%2Fimg_20.png)
 ![img_21.png](..%2Fusing_files%2Fimgs%2Fimg_21.png)
 
+或者模型转存到google drive
+```
+from google.colab import drive
+drive.mount('/content/drive')
 
-### reference(参考文档)
+!cp -r /content/sample_data/README.md /content/drive/MyDrive/vits
+```
+### Reference(参考文档)
 * [Github页面](https://github.com/RVC-Boss/GPT-SoVITS)
 * [GPT-SoVITS中文指南](https://www.yuque.com/baicaigongchang1145haoyuangong/ib3g1e)
 * [GPT-SoVITS操作页面](https://huggingface.co/spaces/aoxiang1221/gpt-vits)
