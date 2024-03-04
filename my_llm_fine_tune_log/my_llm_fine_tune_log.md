@@ -30,7 +30,8 @@ FineTune Mistral (使用 Quantization  和 LoRA（Low-Rank Adaptation）来微�
 
 ### FQ
 1. [知识遗忘](https://github.com/THUDM/ChatGLM-6B/issues/1148)(learning_rate调整)
-2. 模型不够好(多是数据集的问题,或者训练收敛时候就可以停止了step)
+2. 过拟合
+3. 模型不够好(多是数据集的问题,或者训练收敛时候就可以停止了step)
 ### Reference(参考文档)
 * [Mistral微调教程](https://medium.com/@codersama/fine-tuning-mistral-7b-in-google-colab-with-qlora-complete-guide-60e12d437cca)
 * [微调中文教程git](https://github.com/THUDM/ChatGLM-6B/blob/main/ptuning/README.md)
