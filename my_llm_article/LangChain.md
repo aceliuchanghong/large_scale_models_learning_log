@@ -8,7 +8,7 @@ LangChain旨在帮助构建问答应用程序，以及更普遍的RAG应用程�
 
 ![langchain_stack.png](..%2Fusing_files%2Fimgs%2FLangChain%2Flangchain_stack.png)
 
-### 典型的 RAG 应用程序包括:
+### 典型的 RAG(Retrieval Augmented Generation 检索增强生成) 应用程序包括:
 
 - Indexing(索引)
 
@@ -60,6 +60,8 @@ vectorstore = Chroma.from_documents(documents=all_splits, embedding=OpenAIEmbedd
 4. 检索
 ```python
 # LangChain 定义了一个 Retriever 接口，该接口包装了一个索引，该索引可以返回给定 Documents 的字符串查询相关。
+# "k": 6 表示对于每个查询，检索器应该返回最相似的前6个结果
+# retriever 是一个检索器
 retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 6})
 # 执行
 retrieved_docs = retriever.invoke("What are the approaches to Task Decomposition?")
@@ -78,7 +80,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
-# 
+# 使用 LCEL Runnable 协议来定义链
 rag_chain = (
     {"context": retriever | format_docs, "question": RunnablePassthrough()}
     | prompt
