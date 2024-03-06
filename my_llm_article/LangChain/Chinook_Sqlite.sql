@@ -17,7 +17,12 @@
    Drop Foreign Keys Constraints
 ********************************************************************************/
 
-
+/*
+ https://database.guide/2-sample-databases-sqlite/
+ 进入目录并执行:
+ sqlite3 Chinook.db
+ .read Chinook_Sqlite.sql
+ */
 
 
 
