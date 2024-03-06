@@ -90,7 +90,7 @@ rag_chain = (
 for chunk in rag_chain.stream("What is Task Decomposition?"):
     print(chunk, end="", flush=True)
 ```
-
+[demo01.ipynb](LangChain%2Fdemo01.ipynb)
 
 ### Reference(参考文档)
 

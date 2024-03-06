@@ -77,15 +77,7 @@ agent_executor.invoke({"input": "Describe the playlisttrack table"})
 
 ```
 
-
-
-
-
-
-
-
-
-
+[demo02.ipynb](LangChain%2Fdemo02.ipynb)
 
 ### Reference(参考文档)
 
