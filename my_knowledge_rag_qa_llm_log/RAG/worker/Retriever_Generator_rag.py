@@ -1,7 +1,7 @@
 from langchain import hub
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
-from langchain_anthropic import ChatAnthropic
+from langchain.llms import ChatGLM
 
 from my_knowledge_rag_qa_llm_log.RAG.config.config import http_client, test_url
 from my_knowledge_rag_qa_llm_log.RAG.worker.DataLoader_rag import siteLoader
@@ -15,8 +15,12 @@ def search_vectorstore_generate(vectorstore):
     prompt = hub.pull("rlm/rag-prompt")
     # llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0, http_client=http_client)
 
-    # ANTHROPIC_API_KEY
-    llm = ChatAnthropic(model="claude-3-sonnet-20240229", temperature=0.2, max_tokens=1024)
+    # 使用本地的ChatGLM3 远程的:endpoint_url="http://204.12.227.123:8000"
+    llm = ChatGLM(
+        endpoint_url="http://127.0.0.1:8000",
+        max_token=80000,
+        top_n=0.9
+    )
 
     def format_docs(docs):
         return "\n\n".join(doc.page_content for doc in docs)
@@ -34,7 +38,7 @@ def search_vectorstore_generate(vectorstore):
 
     return response
 
-
+# 回答中有英文问题解决:
 if __name__ == '__main__':
     docs1 = siteLoader(test_url)
     all_splits1 = split_docs(docs1)
