@@ -92,8 +92,11 @@ def store_chroma(docs, embeddings, persist_directory="VectorStore"):
 
 
 def get_llm():
+    endpoint_url = (
+        "http://127.0.0.1:8000/v1/chat/completions"
+    )
     llm = ChatGLM(
-        endpoint_url="http://127.0.0.1:8000",
+        endpoint_url=endpoint_url,
         max_token=80000,
         top_n=0.9
     )
