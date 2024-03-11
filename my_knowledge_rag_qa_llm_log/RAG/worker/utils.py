@@ -1,10 +1,15 @@
-from langchain.document_loaders import DirectoryLoader
+from langchain_community.document_loaders import DirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
 import os
 from langchain_community.vectorstores import Chroma
 from my_knowledge_rag_qa_llm_log.RAG.config.config import proxies, test_url
 from langchain_community.document_loaders import WebBaseLoader, TextLoader
+from langchain_community.llms import ChatGLM
+
+
+def format_docs(docs):
+    return "\n\n".join(doc.page_content for doc in docs)
 
 
 def load_documents(directory="documents"):
@@ -84,3 +89,12 @@ def store_chroma(docs, embeddings, persist_directory="VectorStore"):
     db = Chroma.from_documents(docs, embeddings, persist_directory=persist_directory)
     db.persist()
     return db
+
+
+def get_llm():
+    llm = ChatGLM(
+        endpoint_url="http://127.0.0.1:8000",
+        max_token=80000,
+        top_n=0.9
+    )
+    return llm
