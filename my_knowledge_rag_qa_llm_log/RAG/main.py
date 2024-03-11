@@ -3,11 +3,6 @@ import os
 import time
 import random
 
-from my_knowledge_rag_qa_llm_log.RAG.worker.DataLoader_rag import textLoader, fileLoader
-from my_knowledge_rag_qa_llm_log.RAG.worker.Retriever_Generator_rag import search_vectorstore_generate
-from my_knowledge_rag_qa_llm_log.RAG.worker.Spliter_rag import split_docs
-from my_knowledge_rag_qa_llm_log.RAG.worker.Store_rag import save_splits
-
 
 def add_text(history, text):
     history = history + [(text, None)]
@@ -17,23 +12,6 @@ def add_text(history, text):
 def add_file(history, file):
     history = history + [((file.name,), None)]
     return history
-
-
-def add_file2(file):
-    docs1 = fileLoader(file)
-    all_splits1 = split_docs(docs1)
-    vectorstore1 = save_splits(all_splits1)
-
-    return 0
-
-
-def bot_response(history):
-    text = " ".join(history)
-    docs = textLoader(text)
-    all_splits = split_docs(docs)
-    vectorstore = save_splits(all_splits)
-    response = search_vectorstore_generate(vectorstore)
-    return response
 
 
 def bot(history):
@@ -88,5 +66,6 @@ with gr.Blocks() as demo:
 
 if __name__ == '__main__':
     # 通常，在使用 gr.Blocks()创建UI组件时，这些组件将会被添加到一个队列中(将定义的UI组件添加到可视化界面的队列中)
+
     demo.queue()
     demo.launch(share=False)
