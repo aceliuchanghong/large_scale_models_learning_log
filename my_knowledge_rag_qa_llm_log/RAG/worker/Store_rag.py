@@ -17,6 +17,12 @@ def save_splits(all_splits):
     # OpenAIEmbeddings 需要 OPENAI_API_KEY 此处还需要代理
     # vectorstore = Chroma.from_documents(documents=all_splits, embedding=OpenAIEmbeddings(http_client=http_client))
 
+    """
+    Q:一直报错
+    No sentence-transformers model found with name /mnt/chatGLM/embedding/text2vec-large-chinese. Creating a new one with MEAN pooling.
+    A:https://huggingface.co/GanymedeNil/text2vec-large-chinese/discussions/10
+    别人上传的模型少了文件
+    """
     MODEL_PATH = os.environ.get('text2vec', 'GanymedeNil/text2vec-large-chinese')
     Embeddings_Models = {"text2vec": MODEL_PATH}
     model_kwargs = {'device': 'cpu'}
@@ -35,10 +41,4 @@ if __name__ == '__main__':
     docs1 = siteLoader(test_url)
     all_splits1 = split_docs(docs1)
     vectorstore1 = save_splits(all_splits1)
-
-    vectors = vectorstore1.get_vectors()
-    for vector in vectors:
-        print(vector)
-    for doc_id, vector in vectorstore1.items():
-        print(f"Document ID: {doc_id}")
-        print(f"Vector: {vector}")
+    print(vectorstore1)

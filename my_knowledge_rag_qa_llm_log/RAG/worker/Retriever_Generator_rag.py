@@ -1,7 +1,7 @@
 from langchain import hub
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
-from langchain.llms import ChatGLM
+from langchain_community.llms import ChatGLM
 
 from my_knowledge_rag_qa_llm_log.RAG.config.config import http_client, test_url
 from my_knowledge_rag_qa_llm_log.RAG.worker.DataLoader_rag import siteLoader
@@ -37,6 +37,7 @@ def search_vectorstore_generate(vectorstore):
         print(chunk, end="", flush=True)
 
     return response
+
 
 # 回答中有英文问题解决:
 if __name__ == '__main__':

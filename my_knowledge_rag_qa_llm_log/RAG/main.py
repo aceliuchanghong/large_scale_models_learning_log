@@ -3,6 +3,11 @@ import os
 import time
 import random
 
+from my_knowledge_rag_qa_llm_log.RAG.worker.DataLoader_rag import textLoader, fileLoader
+from my_knowledge_rag_qa_llm_log.RAG.worker.Retriever_Generator_rag import search_vectorstore_generate
+from my_knowledge_rag_qa_llm_log.RAG.worker.Spliter_rag import split_docs
+from my_knowledge_rag_qa_llm_log.RAG.worker.Store_rag import save_splits
+
 
 def add_text(history, text):
     history = history + [(text, None)]
@@ -14,8 +19,31 @@ def add_file(history, file):
     return history
 
 
+def add_file2(file):
+    docs1 = fileLoader(file)
+    all_splits1 = split_docs(docs1)
+    vectorstore1 = save_splits(all_splits1)
+
+    return 0
+
+
+def bot_response(history):
+    text = " ".join(history)
+    docs = textLoader(text)
+    all_splits = split_docs(docs)
+    vectorstore = save_splits(all_splits)
+    response = search_vectorstore_generate(vectorstore)
+    return response
+
+
 def bot(history):
-    response = random.choice(["How are you?", "I love you", "I'm very hungry"])
+    message = history[-1][0]
+    # 如果最后一条消息是一个元组类型，通常这种情况下代表文件上传成功，因为上传成功后往往返回的是元组数据，比如 (文件名, 文件大小)
+    if isinstance(message, tuple):
+        response = "文件上传成功"
+    else:
+        # response = bot_response(history)
+        response = random.choice(["How are you?", "I love you", "I'm very hungry"])
     history[-1][1] = ""
     for character in response:
         history[-1][1] += character
