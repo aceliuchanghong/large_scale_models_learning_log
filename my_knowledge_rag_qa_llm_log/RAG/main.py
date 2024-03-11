@@ -33,7 +33,6 @@ with gr.Blocks() as demo:
 
     with gr.Row():
         btn = gr.UploadButton("📁", scale=3, file_types=["text"])
-
         txt = gr.Textbox(
             scale=20,
             show_label=False,
@@ -43,17 +42,18 @@ with gr.Blocks() as demo:
         )
         btn_submit = gr.Button(scale=6, value="Generate", variant="primary")
         btn_clear = gr.Button(scale=2, value="Clear", variant="secondary")
-        # 上传处理逻辑
+
+        # 上传文件处理逻辑
         file_msg = btn.upload(add_file, [chatbot, btn], [chatbot], queue=False).then(
-            bot, chatbot, chatbot
+            bot, chatbot, chatbot, api_name="bot_file_response"
         )
         # 发送文本 点击按钮 处理逻辑
         btn_submit.click(add_text, [chatbot, txt], [chatbot, txt], queue=False).then(
-            bot, chatbot, chatbot, api_name="bot_response"
+            bot, chatbot, chatbot, api_name="bot_text_response"
         )
         # 发送文本 enter 处理逻辑
         txt_msg = txt.submit(add_text, [chatbot, txt], [chatbot, txt], queue=False).then(
-            bot, chatbot, chatbot, api_name="bot_response"
+            bot, chatbot, chatbot, api_name="bot_text_response"
         )
         # 清除历史处理逻辑
         btn_clear.click(lambda: None, None, chatbot, queue=False)
