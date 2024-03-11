@@ -19,8 +19,8 @@ def save_splits(all_splits):
 
     MODEL_PATH = os.environ.get('text2vec', 'GanymedeNil/text2vec-large-chinese')
     Embeddings_Models = {"text2vec": MODEL_PATH}
-    # model_kwargs = {'device': 'cpu'}
-    model_kwargs = {"device": "cuda:0"}
+    model_kwargs = {'device': 'cpu'}
+    # model_kwargs = {"device": "cuda:0"}
     encode_kwargs = {'normalize_embeddings': False}
 
     # HuggingFaceEmbeddings
