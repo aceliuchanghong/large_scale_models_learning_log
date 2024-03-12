@@ -6,6 +6,7 @@ from langchain_community.vectorstores import Chroma
 from my_knowledge_rag_qa_llm_log.RAG.config.config import proxies, test_url
 from langchain_community.document_loaders import WebBaseLoader, TextLoader
 from langchain_community.llms import ChatGLM
+from langchain_anthropic import AnthropicLLM
 
 
 def format_docs(docs):
@@ -91,7 +92,7 @@ def store_chroma(docs, embeddings, persist_directory="VectorStore"):
     return db
 
 
-def get_llm():
+def get_chatglm_llm():
     endpoint_url = (
         "http://127.0.0.1:8000/"
     )
@@ -101,3 +102,8 @@ def get_llm():
         top_n=0.9
     )
     return llm
+
+
+def get_claude_llm():
+    model = AnthropicLLM(model='claude-3-opus-20240229')
+    return model

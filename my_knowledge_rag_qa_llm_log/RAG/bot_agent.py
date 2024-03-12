@@ -3,8 +3,8 @@ import os
 from langchain_community.vectorstores.chroma import Chroma
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
-from my_knowledge_rag_qa_llm_log.RAG.worker.utils import get_llm, load_embedding_model, load_documents, store_chroma, \
-    format_docs
+from my_knowledge_rag_qa_llm_log.RAG.worker.utils import get_chatglm_llm, load_embedding_model, load_documents, \
+    store_chroma, format_docs, get_claude_llm
 
 
 class bot_agent:
@@ -16,7 +16,7 @@ class bot_agent:
                 问题：{question}
                 """)
         self.embeddings = load_embedding_model()
-        self.llm = get_llm()
+        self.llm = get_chatglm_llm()
         if not os.path.exists('VectorStore'):
             documents = load_documents()
             self.db = store_chroma(documents, self.embeddings)
