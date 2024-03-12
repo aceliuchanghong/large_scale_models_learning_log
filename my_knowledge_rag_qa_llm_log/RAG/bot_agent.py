@@ -3,7 +3,6 @@ import os
 from langchain_community.vectorstores.chroma import Chroma
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
-
 from my_knowledge_rag_qa_llm_log.RAG.worker.utils import get_llm, load_embedding_model, load_documents, store_chroma, \
     format_docs
 
@@ -26,6 +25,12 @@ class bot_agent:
         self.retriever = self.db.as_retriever()
 
     def get_rag(self, q="1+1等于几"):
+        """
+        对于回答里面如果出现中文夹杂英文情况,主要是 langchain 里面的修饰过的 prompt 是英文,所以模型就会英文回答
+        解决办法就是不用langchain做最后一步的回答,自己写一个post请求
+        :param q:
+        :return:
+        """
         rag_chain = (
                 {"context": self.retriever | format_docs, "question": RunnablePassthrough()}
                 | self.prompt
