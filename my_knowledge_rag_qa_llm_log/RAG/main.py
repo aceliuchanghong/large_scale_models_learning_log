@@ -1,9 +1,9 @@
 import gradio as gr
 import time
-import random
-
-from my_knowledge_rag_qa_llm_log.RAG.agent import get_rag
+from my_knowledge_rag_qa_llm_log.RAG.bot_agent import bot_agent
 from my_knowledge_rag_qa_llm_log.RAG.worker.utils import *
+
+this_bot_agent = bot_agent()
 
 
 def add_text(history, text):
@@ -16,26 +16,20 @@ def add_file(history, file):
     return history
 
 
-# def add_file2(history, file):
-#     """
-#     上传文件后的回调函数，将上传的文件向量化存入数据库
-#     :param history:
-#     :param file:
-#     :return:
-#     """
-#     directory = os.path.dirname(file.name)
-#     documents = load_documents(directory)
-#     db = store_chroma(documents, embeddings)
-#     retriever = db.as_retriever()
-#     global rag_chain
-#     rag_chain = (
-#             {"context": retriever | format_docs, "question": RunnablePassthrough()}
-#             | PROMPT
-#             | llm
-#             | StrOutputParser()
-#     )
-#     history = history + [((file.name,), None)]
-#     return history
+def add_file2(history, file):
+    """
+    上传文件后的回调函数，将上传的文件向量化存入数据库
+    :param history:
+    :param file:
+    :return:
+    """
+    directory = os.path.dirname(file.name)
+    documents = load_documents(directory)
+    db = store_chroma(documents, this_bot_agent.embeddings)
+    retriever = db.as_retriever()
+    this_bot_agent.db = retriever
+    history = history + [((file.name,), None)]
+    return history
 
 
 def bot(history):
@@ -45,7 +39,7 @@ def bot(history):
         response = "文件上传成功"
     else:
         text = ", ".join([f"{item[0]} {item[1]}" for item in history])
-        response = get_rag(text)
+        response = this_bot_agent.get_rag(text)
         # response = random.choice(["How are you?", "I love you", "I'm very hungry"])
     history[-1][1] = ""
     for character in response:
