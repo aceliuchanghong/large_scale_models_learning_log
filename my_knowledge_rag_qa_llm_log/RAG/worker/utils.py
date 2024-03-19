@@ -6,7 +6,9 @@ from langchain_community.vectorstores import Chroma
 from my_knowledge_rag_qa_llm_log.RAG.config.config import proxies, test_url
 from langchain_community.document_loaders import WebBaseLoader, TextLoader
 from langchain_community.llms import ChatGLM
-from langchain_anthropic import AnthropicLLM
+import anthropic
+from langchain_community.chat_models import ChatAnthropic
+import httpx
 
 
 def format_docs(docs):
@@ -105,5 +107,18 @@ def get_chatglm_llm():
 
 
 def get_claude_llm():
-    model = AnthropicLLM(model='claude-3-opus-20240229')
+    proxyHost = "127.0.0.1"
+    proxyPort = 10809
+    client = anthropic.Anthropic(
+        # defaults to os.environ.get("ANTHROPIC_API_KEY")
+        http_client=httpx.Client(proxies=f"http://{proxyHost}:{proxyPort}")
+    )
+
+    model = ChatAnthropic(model='claude-3-opus-20240229')
     return model
+
+
+if __name__ == '__main__':
+    model = get_claude_llm()
+    response = model("What are the biggest risks facing humanity?")
+    print(response)

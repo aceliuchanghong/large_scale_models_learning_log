@@ -1,13 +1,19 @@
+import random
+
 import gradio as gr
 import time
 from my_knowledge_rag_qa_llm_log.RAG.bot_agent import bot_agent
+from my_knowledge_rag_qa_llm_log.RAG.test.test_llm import call_anthropic_api
 from my_knowledge_rag_qa_llm_log.RAG.worker.utils import *
-
-this_bot_agent = bot_agent()
 
 
 def add_text(history, text):
     history = history + [(text, None)]
+    # print(history)
+    if len(history) == 1:
+        history2 = ['你是一个智能叫做sisconsavior的助手', '您好,我是sisconsavior.']
+        history = [history2] + history
+    # print(history)
     return history, gr.Textbox(value="", interactive=True)
 
 
@@ -16,20 +22,20 @@ def add_file(history, file):
     return history
 
 
-def add_file2(history, file):
-    """
-    上传文件后的回调函数，将上传的文件向量化存入数据库
-    :param history:
-    :param file:
-    :return:
-    """
-    directory = os.path.dirname(file.name)
-    documents = load_documents(directory)
-    db = store_chroma(documents, this_bot_agent.embeddings)
-    retriever = db.as_retriever()
-    this_bot_agent.db = retriever
-    history = history + [((file.name,), None)]
-    return history
+# def add_file2(history, file):
+#     """
+#     上传文件后的回调函数，将上传的文件向量化存入数据库
+#     :param history:
+#     :param file:
+#     :return:
+#     """
+#     directory = os.path.dirname(file.name)
+#     documents = load_documents(directory)
+#     db = store_chroma(documents, this_bot_agent.embeddings)
+#     retriever = db.as_retriever()
+#     this_bot_agent.db = retriever
+#     history = history + [((file.name,), None)]
+#     return history
 
 
 def bot(history):
@@ -38,8 +44,13 @@ def bot(history):
     if isinstance(message, tuple):
         response = "文件上传成功"
     else:
-        text = ", ".join([f"{item[0]} {item[1]}" for item in history])
-        response = this_bot_agent.get_rag(text)
+        history_true = history[:-1]
+        print("history:")
+        print(history_true)
+        prompt = history[-1][0]
+        print("prompt:" + prompt)
+        input_data = {"history": history_true, "prompt": prompt}
+        response = call_anthropic_api(input_data)
         # response = random.choice(["How are you?", "I love you", "I'm very hungry"])
     history[-1][1] = ""
     for character in response:
