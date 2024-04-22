@@ -93,15 +93,31 @@ def store_chroma(docs, embeddings, persist_directory="VectorStore"):
     return db
 
 
+import os
+from openai import OpenAI
+
+DEEPINFRA_API_KEY = os.getenv('DEEPINFRA_API_KEY')
+
+
+class ChatCompletion:
+    def __init__(self, temperature, model, api_key, base_url):
+        self.temperature = temperature
+        self.model = model
+        self.openai = OpenAI(api_key=api_key, base_url=base_url)
+
+    def __call__(self, prompt):
+        messages = [{"role": "user", "content": prompt}]
+        response = self.openai.chat.completions.create(
+            model=self.model,
+            messages=messages,
+            temperature=self.temperature,
+        )
+        return response
+
+
 def get_chatglm_llm():
-    endpoint_url = (
-        "http://127.0.0.1:8000/"
-    )
-    llm = ChatGLM(
-        endpoint_url=endpoint_url,
-        max_token=80000,
-        top_n=0.9
-    )
+    llm = ChatCompletion(temperature=0.7, model="meta-llama/Meta-Llama-3-70B-Instruct",
+                         api_key=DEEPINFRA_API_KEY, base_url="https://api.deepinfra.com/v1/openai")
     return llm
 
 
